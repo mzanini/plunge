@@ -20,6 +20,7 @@ describe Retriever do
       stockInfo = @retriever.stock('MSFT', '2017-06-01')
       info = JSON.parse(stockInfo)
       expect(info['datatable']['data'][0][0]).to eq('MSFT')
+      expect(info['datatable']['data'][0][1]).to eq('2017-06-01')
     end
   end
 
