@@ -31,11 +31,19 @@ describe Retriever do
     it 'returns the opening price for that stock during that specific day' do
       expect( @retriever.opening('GOOGL', Date.parse('2017-08-15')) ).to eq(941.03)
     end
+
+    it 'returns nil if data not present' do
+      expect( @retriever.opening('GOOGL', Date.parse('2017-01-01')) ).to eq(nil)
+    end
   end
 
   describe '#closing' do
     it 'returns the closing price for that stock during that specific day' do
       expect( @retriever.closing('GOOGL', Date.parse('2017-08-15')) ).to eq(938.08)
+    end
+
+    it 'returns nil if data not present' do
+      expect( @retriever.closing('GOOGL', Date.parse('2017-01-01')) ).to eq(nil)
     end
   end
 
