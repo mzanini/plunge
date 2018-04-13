@@ -3,7 +3,10 @@ require_relative '../lib/retriever'
 
 describe Retriever do 
 
-  before :all do
+  before :each do
+    loggerMock = double('logger').as_null_object
+    Logging.set_logger(loggerMock)
+
     token = File.open('token', 'r').read
     @retriever = Retriever.new(token);
   end
