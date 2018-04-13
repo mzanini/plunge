@@ -10,7 +10,13 @@ class PC
     @detective = Detective.new( Retriever.new(apiToken) )
   end
 
-  def run(options, security)  
+  def run(options, security)
+    if( options[:verbose] )
+      log.level = Logger::INFO
+    else
+      log.level = Logger::WARN
+    end
+
     if( options[:average] ) 
       year = 2017
       monthlyAverage = Array.new
@@ -41,6 +47,9 @@ if __FILE__ == $0
     end
     opts.on("-a", "--average", "Prints average opening and closing price for the security") do 
       options[:average] = true
+    end
+    opts.on("-v", "--verbose", "Sets the log level to INFO") do 
+      options[:verbose] = true
     end
   end.parse!
 
