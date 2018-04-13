@@ -3,7 +3,7 @@ require_relative '../lib/detective'
 describe 'detective' do
   before :all do 
     token = File.open('token', 'r').read
-    @retriever = Retriever.new(token);
+    @retriever = Retriever.new(token)
     @detective = Detective.new( @retriever )
   end
 
