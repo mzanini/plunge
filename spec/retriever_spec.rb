@@ -17,7 +17,7 @@ describe Retriever do
 
   describe '#stock' do 
     it 'retrieves all data for the specified security for that day' do
-      stockInfo = @retriever.stock('MSFT', '2017-06-01')
+      stockInfo = @retriever.stock( 'MSFT', Date.parse('2017-06-01') )
       info = JSON.parse(stockInfo)
       expect(info['datatable']['data'][0][0]).to eq('MSFT')
       expect(info['datatable']['data'][0][1]).to eq('2017-06-01')
@@ -26,13 +26,13 @@ describe Retriever do
 
   describe '#opening' do
     it 'returns the opening price for that stock during that specific day' do
-      expect(@retriever.opening('GOOGL', '2017-08-15')).to eq(941.03)
+      expect( @retriever.opening('GOOGL', Date.parse('2017-08-15')) ).to eq(941.03)
     end
   end
 
   describe '#closing' do
     it 'returns the closing price for that stock during that specific day' do
-      expect(@retriever.closing('GOOGL', '2017-08-15')).to eq(938.08)
+      expect( @retriever.closing('GOOGL', Date.parse('2017-08-15')) ).to eq(938.08)
     end
   end
 
