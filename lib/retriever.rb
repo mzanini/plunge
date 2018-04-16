@@ -25,6 +25,22 @@ class Retriever
     return response.body
   end
 
+  def volume(name, date) 
+    log.info "Retrieving volume info for stock: #{name} at date: #{date}"
+    begin
+      response = RestClient.get "#{@base_url}ticker=#{name}&date=#{date.strftime('%Y-%m-%d')}&api_key=#{token}&qopts.columns=volume"
+    rescue RestClient::ExceptionWithResponse => e
+      e.response
+    end
+    
+    data = JSON.parse(response.body)
+    begin
+      return data['datatable']['data'][0][0]
+    rescue
+      return nil
+    end
+  end
+
   def opening(name, date)
     log.info "Retrieving stock opening price for stock: #{name} at date: #{date}"
     begin
