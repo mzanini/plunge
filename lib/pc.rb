@@ -32,6 +32,15 @@ class PC
       maxProfit, day = find_maximum_profit(security)
       puts "Maximum amount of profit: $#{maxProfit.round(2)}, on: #{day.strftime('%d %B %Y')}"
     end
+
+    if( options[:busyDay] )
+      averageActivity = @detective.average_activity_level(security, year: 2017, firstMonth: 1, lastMonth: 6)
+      puts "The average activity for #{security} was #{averageActivity}"
+      busyDays = find_busy_days(security, averageActivity)
+      busyDays.each do |dayInfo|
+        puts "#{dayInfo[:day].strftime('%B %d, %Y')} was a busy day! Volume: #{dayInfo[:volume]}"
+      end
+    end
   end
 
   def compute_average(stock)
@@ -68,6 +77,33 @@ class PC
     return maxProfit, maxProfitDay
   end
 
+  def find_busy_days(stock, averageActivity)
+    year = 2017
+    busyDays = Array.new
+    for month in 1..6
+      days = days_in_month(year, month)
+      for day in 1..days
+        dailyVolume = @detective.retriever.volume( stock, Date.new(year, month, day) )
+        if(not dailyVolume.nil?)
+          if( is_10_percent_higher(averageActivity, dailyVolume) )
+            busyDays << {:day => Date.new(year, month, day), :volume => dailyVolume}
+          end
+        end
+      end
+    end
+
+    return busyDays
+  end
+
+  def is_10_percent_higher(average, current)
+    return current / average > 1.10
+  end
+
+  def days_in_month(year, month)
+    Date.new(year, month, -1).day
+  end
+
+  private :days_in_month
 end
 
 
@@ -85,8 +121,8 @@ if __FILE__ == $0
     opts.on("-m", "--max-daily-profit", "Prints the day with the maximum amount of profit if the security is purchased at the day's low and sold at the day's high.") do 
       options[:maximum] = true
     end
-    opts.on("-v", "--verbose", "Sets the log level to INFO") do 
-      options[:verbose] = true
+    opts.on("-bd", "--busy-day", "Display the days where the volume was more than 10% higher than the security’s average volume.") do 
+      options[:busyDay] = true
     end
     opts.on("-v", "--verbose", "Sets the log level to INFO") do 
       options[:verbose] = true

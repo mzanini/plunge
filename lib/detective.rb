@@ -4,6 +4,8 @@ require_relative 'logging'
 class Detective
   include Logging
 
+  attr_accessor :retriever
+
   def initialize(retriever)
     @retriever = retriever
   end
@@ -69,7 +71,7 @@ class Detective
   end
 
   def average(prices) 
-    log.info "Averaging list of prices: #{prices}"
+    log.info "Averaging list: #{prices}"
     sum = 0.00
     for price in prices
       sum += price
