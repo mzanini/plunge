@@ -11,12 +11,13 @@ class Retriever
 
   def initialize(token)
     @token = token
+    @base_url = 'https://www.quandl.com/api/v3/datatables/WIKI/PRICES.json?'
   end
 
   def stock(name, date) 
     log.info "Retrieving stock info for stock: #{name} at date: #{date}"
     begin
-      response = RestClient.get "https://www.quandl.com/api/v3/datatables/WIKI/PRICES.json?ticker=#{name}&date=#{date.strftime('%Y-%m-%d')}&api_key=#{token}"
+      response = RestClient.get "#{@base_url}ticker=#{name}&date=#{date.strftime('%Y-%m-%d')}&api_key=#{token}"
     rescue RestClient::ExceptionWithResponse => e
       e.response
     end
@@ -27,7 +28,7 @@ class Retriever
   def opening(name, date)
     log.info "Retrieving stock opening price for stock: #{name} at date: #{date}"
     begin
-      response = RestClient.get "https://www.quandl.com/api/v3/datatables/WIKI/PRICES.json?qopts.columns=open&ticker=#{name}&date=#{date.strftime('%Y-%m-%d')}&api_key=#{token}"
+      response = RestClient.get "#{@base_url}qopts.columns=open&ticker=#{name}&date=#{date.strftime('%Y-%m-%d')}&api_key=#{token}"
     rescue RestClient::ExceptionWithResponse => e
       e.response
     end
@@ -43,7 +44,7 @@ class Retriever
   def closing(name, date)
     log.info "Retrieving stock closing price for stock: #{name} at date: #{date}"
     begin
-      response = RestClient.get "https://www.quandl.com/api/v3/datatables/WIKI/PRICES.json?qopts.columns=close&ticker=#{name}&date=#{date.strftime('%Y-%m-%d')}&api_key=#{token}"
+      response = RestClient.get "#{@base_url}qopts.columns=close&ticker=#{name}&date=#{date.strftime('%Y-%m-%d')}&api_key=#{token}"
     rescue RestClient::ExceptionWithResponse => e
       e.response
     end
