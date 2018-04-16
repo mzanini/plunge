@@ -47,4 +47,18 @@ describe Retriever do
     end
   end
 
+  describe '#opening_and_closing' do
+    it 'returns the opening and closing price for that stock during that specific day' do
+      openingPrice, closingPrice = @retriever.opening_and_closing('GOOGL', Date.parse('2017-08-15'))
+      expect( openingPrice ).to eq(941.03)
+      expect( closingPrice ).to eq(938.08)
+    end
+
+    it 'returns nil if data not present' do
+      openingPrice, closingPrice = @retriever.opening_and_closing('GOOGL', Date.parse('2017-01-01'))
+      expect( openingPrice ).to eq(nil)
+      expect( closingPrice ).to eq(nil)
+    end
+  end
+
 end

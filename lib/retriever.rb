@@ -57,4 +57,20 @@ class Retriever
     end
   end
 
+  def opening_and_closing(name, date) 
+    log.info "Retrieving opening and closing price for stock: #{name} at date: #{date}"
+    begin
+      response = RestClient.get "#{@base_url}qopts.columns=open,close&ticker=#{name}&date=#{date.strftime('%Y-%m-%d')}&api_key=#{token}"
+    rescue RestClient::ExceptionWithResponse => e
+      e.response
+    end
+    
+    data = JSON.parse(response.body)
+    begin
+      return data['datatable']['data'][0][0], data['datatable']['data'][0][1]
+    rescue
+      return nil
+    end
+  end
+
 end
