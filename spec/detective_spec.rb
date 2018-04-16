@@ -2,6 +2,9 @@ require_relative '../lib/detective'
 
 describe 'detective' do
   before :all do 
+    loggerMock = double('logger').as_null_object
+    Logging.set_logger(loggerMock)
+
     token = File.open('token', 'r').read
     @retriever = Retriever.new(token)
     @detective = Detective.new( @retriever )
