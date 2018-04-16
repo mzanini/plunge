@@ -2,6 +2,8 @@ require 'optionparser'
 require_relative 'retriever'
 require_relative 'detective'
 require_relative 'logging'
+require 'restclient/components'
+require 'rack/cache'
 
 class PC 
   include Logging
@@ -11,6 +13,10 @@ class PC
   end
 
   def run(options, security)
+    if( options[:caching] )
+      RestClient.enable Rack::Cache
+    end
+
     if( options[:verbose] )
       log.level = Logger::INFO
     else
@@ -40,6 +46,7 @@ end
 
 if __FILE__ == $0
   options = {}
+  options[:caching] = true
   OptionParser.new do |opts|
     opts.banner = "Usage: pc [options] TICKER"
     opts.on("-t", "--token TOKEN", "Token to access the API") do |givenToken|
@@ -50,6 +57,12 @@ if __FILE__ == $0
     end
     opts.on("-v", "--verbose", "Sets the log level to INFO") do 
       options[:verbose] = true
+    end
+    opts.on("-v", "--verbose", "Sets the log level to INFO") do 
+      options[:verbose] = true
+    end
+    opts.on("-nc", "--no-cache", "Disable caching") do 
+      options[:caching] = false
     end
   end.parse!
 
