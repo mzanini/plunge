@@ -27,6 +27,18 @@ describe Retriever do
     end
   end
 
+  describe '#volume' do 
+    it 'retrieves the activity volume for that day' do
+      volume = @retriever.volume( 'MSFT', Date.parse('2017-06-01') )
+      expect(volume).to be_within(0.01).of(21066468.0)
+    end
+
+    it 'returns null if there was no activity' do
+      volume = @retriever.volume( 'MSFT', Date.parse('2017-01-01') )
+      expect(volume).to eq(nil)
+    end
+  end
+
   describe '#opening' do
     it 'returns the opening price for a stock during that specific day' do
       expect( @retriever.opening('GOOGL', Date.parse('2017-08-15')) ).to eq(941.03)

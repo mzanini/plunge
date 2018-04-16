@@ -21,6 +21,11 @@ Get the monthly average of a security with the -a option:
 ruby pc.rb -t <your_token> -a GOOGL
 ```
 
+Get the days where the volume was more than 10% higher than the security’s average volume:
+```
+ruby pc.rb -t <your_token> -bd GOOGL
+```
+
 # Development
 Before running the test, place your token in a file named _token_ in the main project directory.
 Run the tests with the command `rspec` or `bundle exec rspec` if you didn't install rspec globally in your system. 

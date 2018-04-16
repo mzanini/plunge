@@ -4,6 +4,8 @@ require_relative 'logging'
 class Detective
   include Logging
 
+  attr_accessor :retriever
+
   def initialize(retriever)
     @retriever = retriever
   end
@@ -51,8 +53,25 @@ class Detective
     return maxProfit, maxProfitDay
   end
 
+  def average_activity_level(stock, date)
+    year = date[:year]
+    firstMonth = date[:firstMonth]
+    lastMonth = date[:lastMonth]
+    
+    activityLevel = Array.new
+    for month in firstMonth..lastMonth
+      days = days_in_month(year, month)
+      for day in 1..days
+        volume = @retriever.volume( stock, Date.new(year, month, day) )
+        activityLevel.push(volume) if not volume.nil?
+      end
+    end
+
+    return average(activityLevel)
+  end
+
   def average(prices) 
-    log.info "Averaging list of prices: #{prices}"
+    log.info "Averaging list: #{prices}"
     sum = 0.00
     for price in prices
       sum += price
