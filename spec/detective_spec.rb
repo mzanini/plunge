@@ -22,9 +22,17 @@ describe 'detective' do
     end
   end
 
-  describe '#daily_profit' do
-    it 'returns the profit obtained if the security is purchased at the day\'s low and sold at the day\'s high' do
-      expect( @detective.maximum_monthly_daily_profit('GOOGL', year: 2017, month: 01) ).to be_within(0.01).of(10.51)
+  describe '#maximum_daily_profit_in_month' do
+    it 'returns the profit obtained if the security is purchased at the day\'s low and sold at the day\'s high, at the day at which this happened' do
+      profit, day = @detective.maximum_daily_profit_in_month('GOOGL', year: 2017, month: 01)
+      expect( profit ).to be_within(0.01).of(25.10)
+      expect( day ).to eq( Date.parse('2017-01-27') )
+    end
+
+    it 'returns the profit obtained if the security is purchased at the day\'s low and sold at the day\'s high, at the day at which this happened. Other example.' do
+      profit, day = @detective.maximum_daily_profit_in_month('MSFT', year: 2017, month: 04)
+      expect( profit ).to be_within(0.01).of(1.45)
+      expect( day ).to eq( Date.parse('2017-04-28') )
     end
   end
 
