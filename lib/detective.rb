@@ -32,6 +32,25 @@ class Detective
     return average(close_price)
   end
 
+  def maximum_daily_profit_in_month(stock, date)
+    days = days_in_month(date[:year], date[:month])
+    maxProfitDay = Date.new(date[:year], date[:month], 1)
+    maxProfit = Float::MIN
+    for day in 1..days
+      currentDate = Date.new(date[:year], date[:month], day)
+      highPrice, lowPrice = @retriever.high_and_low(stock, currentDate)
+      if(!highPrice.nil? && !lowPrice.nil?)
+        profit = highPrice - lowPrice
+        if profit > maxProfit 
+          maxProfit = profit
+          maxProfitDay = currentDate
+        end
+      end
+    end
+
+    return maxProfit, maxProfitDay
+  end
+
   def average(prices) 
     log.info "Averaging list of prices: #{prices}"
     sum = 0.00
