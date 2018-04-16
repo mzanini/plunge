@@ -22,6 +22,12 @@ describe 'detective' do
     end
   end
 
+  describe '#average_activity_level' do
+    it 'returns the average activity level for a security during certain months' do
+      expect( @detective.average_activity_level('GOOGL', year: 2017, firstMonth: 1, lastMonth: 1) ).to be_within(0.01).of(1842012.75)
+    end
+  end
+
   describe '#maximum_daily_profit_in_month' do
     it 'returns the profit obtained if the security is purchased at the day\'s low and sold at the day\'s high, at the day at which this happened' do
       profit, day = @detective.maximum_daily_profit_in_month('GOOGL', year: 2017, month: 01)

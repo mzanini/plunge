@@ -32,6 +32,11 @@ describe Retriever do
       volume = @retriever.volume( 'MSFT', Date.parse('2017-06-01') )
       expect(volume).to be_within(0.01).of(21066468.0)
     end
+
+    it 'returns null if there was no activity' do
+      volume = @retriever.volume( 'MSFT', Date.parse('2017-01-01') )
+      expect(volume).to eq(nil)
+    end
   end
 
   describe '#opening' do
