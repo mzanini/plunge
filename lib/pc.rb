@@ -55,10 +55,12 @@ class PC
         :average_close => "$#{monthlyClose.round(2)}"
       }
       monthlyAverage.push( monthItem )
+      print '#'
     end
     result = Hash.new
     result[stock] = monthlyAverage
 
+    puts '#'
     return result
   end
 
@@ -72,8 +74,10 @@ class PC
         maxProfit = profit
         maxProfitDay = day
       end
+      print '#'
     end
 
+    puts '#'
     return maxProfit, maxProfitDay
   end
 
@@ -90,8 +94,10 @@ class PC
           end
         end
       end
+      print '#'
     end
 
+    puts '#'
     return busyDays
   end
 
