@@ -41,9 +41,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  rack-cache
+  rack-cache (= 1.7.1)
   rest-client (= 2.0.2)
-  rest-client-components
+  rest-client-components (= 1.5.0)
   rspec (= 3.7.0)
 
 BUNDLED WITH
