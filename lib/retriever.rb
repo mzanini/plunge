@@ -25,60 +25,35 @@ class Retriever
     log.info "Retrieving volume info for stock: #{name} at date: #{date}"
     response = query_api(name, date, 'volume')
 
-    data = JSON.parse(response)
-    begin
-      return data['datatable']['data'][0][0]
-    rescue
-      return nil
-    end
+    return data(response, 0)
   end
 
   def opening(name, date)
     log.info "Retrieving stock opening price for stock: #{name} at date: #{date}"
     response = query_api(name, date, 'open')
     
-    data = JSON.parse(response)
-    begin
-      return data['datatable']['data'][0][0]
-    rescue
-      return nil
-    end
+    return data(response, 0)
   end
 
   def closing(name, date)
     log.info "Retrieving stock closing price for stock: #{name} at date: #{date}"
     response = query_api(name, date, 'close')
     
-    data = JSON.parse(response)
-    begin
-      return data['datatable']['data'][0][0]
-    rescue
-      return nil
-    end
+    return data(response, 0)
   end
 
   def opening_and_closing(name, date) 
     log.info "Retrieving opening and closing price for stock: #{name} at date: #{date}"
     response = query_api(name, date, 'open,close')
     
-    data = JSON.parse(response)
-    begin
-      return data['datatable']['data'][0][0], data['datatable']['data'][0][1]
-    rescue
-      return nil
-    end
+    return data(response, 0), data(response, 1)
   end
 
   def high_and_low(name, date) 
     log.info "Retrieving opening and closing price for stock: #{name} at date: #{date}"
     response = query_api(name, date, 'high,low')
     
-    data = JSON.parse(response)
-    begin
-      return data['datatable']['data'][0][0], data['datatable']['data'][0][1]
-    rescue
-      return nil
-    end
+    return data(response, 0), data(response, 1)
   end
 
   def query_api(stock, date, columns = nil)
@@ -97,5 +72,14 @@ class Retriever
     return response.body
   end
 
-  private :query_api
+  def data(responseJson, position)
+    data = JSON.parse(responseJson)
+    begin
+      return data['datatable']['data'][0][position]
+    rescue
+      return nil
+    end
+  end
+
+  private :query_api, :data
 end
